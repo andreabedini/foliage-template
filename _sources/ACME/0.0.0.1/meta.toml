@@ -1,0 +1,6 @@
+timestamp = 2015-01-02T21:48:24+00:00
+url = "https://hackage.haskell.org/package/ACME-0.0.0.1/ACME-0.0.0.1.tar.gz"
+
+[[revisions]]
+  number = 1
+  timestamp = 2022-03-22T14:15:00+00:00
