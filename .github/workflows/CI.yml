@@ -21,7 +21,7 @@ jobs:
             accept-flake-config = true
 
       - name: Run checks
-        run: nix shell -c ./scripts/check.sh
+        run: nix develop -c ./scripts/check.sh
 
   build:
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
 
       - name: Build repository
         run: |
-          nix shell -c foliage build
+          nix develop -c foliage build
 
       - name: Copy static web assets
         run: |
