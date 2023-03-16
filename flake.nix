@@ -1,7 +1,8 @@
 {
   inputs = {
     foliage.url = "github:andreabedini/foliage";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.follows = "foliage/nixpkgs";
+    flake-utils.follows = "foliage/flake-utils";
   };
 
   outputs = { self, nixpkgs, foliage, flake-utils }:
@@ -9,15 +10,29 @@
       (system:
         let pkgs = nixpkgs.legacyPackages.${system}; in
         {
-          packages.default = pkgs.buildEnv {
-            name = "foliage-template";
-            paths = [
-              pkgs.bash
-              pkgs.coreutils
-              pkgs.curl
-              pkgs.git
+          devShells.default = with pkgs; mkShellNoCC {
+            name = "cardano-haskell-packages";
+            buildInputs = [
+              bash
+              coreutils
+              curlMinimal.bin
+              gitMinimal
+              gnutar
               foliage.packages.${system}.default
             ];
           };
         });
+
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.iog.io"
+      "https://foliage.cachix.org"
+      "https://cache.zw3rk.com"
+    ];
+    extra-trusted-public-keys = [
+      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+      "foliage.cachix.org-1:kAFyYLnk8JcRURWReWZCatM9v3Rk24F5wNMpEj14Q/g="
+      "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+    ];
+  };
 }
